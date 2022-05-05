@@ -10,17 +10,17 @@
                     </div>
                 </div>
             </header>
-            <div>
+            <!-- <div>
             <pre>
             {{JSON.stringify(formValues,null,2)}}
             </pre>
-            </div>
+            </div> -->
             <div className="form-content">
                 <form className="form-head" action="#" @submit="submitForm">
                     <div className="form-head">Employee Payroll form</div>
                     <div className="row-content">
                         <label className="label text" htmlFor="name">Name</label>
-                        <input className="input" type="text" id="name" v-model.trim="formValues.name" />
+                        <input className="input" type="text" id="name" placeholder="Enter your name" v-model.trim="formValues.name" />
                    
                     </div>
                     <div className="row-content">
@@ -58,15 +58,15 @@
                     </div>
                     <div className="row-content">
                         <label className="label text" htmlFor="departments">Department</label>
-                        <input type="checkbox" id="it" value="it" v-model="formValues.department" />
+                        <input type="checkbox" id="it" value="it" v-model="formValues.departments" />
                         <label for="it">IT</label>     
-                        <input type="checkbox" id="hr" value="hr" v-model="formValues.department" />
+                        <input type="checkbox" id="hr" value="hr" v-model="formValues.departments" />
                         <label for="hr">HR</label>
-                        <input type="checkbox" id="engineer" value="engineer"  v-model="formValues.department"/>
+                        <input type="checkbox" id="engineer" value="engineer"  v-model="formValues.departments"/>
                         <label for="engineer">Engineer</label>
-                        <input type="checkbox" id="sales" value="sales"  v-model="formValues.department"/>
+                        <input type="checkbox" id="sales" value="sales"  v-model="formValues.departments"/>
                         <label for="sales">SALES</label>
-                        <input type="checkbox" id="other" value="other"  v-model="formValues.department"/>
+                        <input type="checkbox" id="other" value="other"  v-model="formValues.departments"/>
                         <label for="other">Other</label>
                        
                        
@@ -74,7 +74,7 @@
 
                     <div className="row-content">
                         <label className="label text" htmlFor="salary">Salary</label>
-                        <input className="input" type="text" id="salary" name="salary" v-model="formValues.salary" />
+                        <input className="input" type="text" id="salary" placeholder="Enter your salary" name="salary" v-model="formValues.salary" />
                        
                     </div>
 
@@ -145,7 +145,7 @@
 
                     <div className="row-content">
                         <label className="label text" htmlFor="notes">Notes</label>
-                        <textarea id="notes" className="input" name="notes" v-model="formValues.note" placeholder="Type your note here"></textarea>
+                        <textarea id="notes" className="input" name="notes" v-model="formValues.note" placeholder="Type your notes here"></textarea>
         
                     </div>
 
@@ -165,6 +165,8 @@
 
 
 <script>
+import EmployeeService from "../service/EmployeeService";
+
 export default {
     name: 'AddForm',
     data(){
@@ -176,18 +178,52 @@ export default {
                 day:'',
                 month:'',
                 year:'',
-                department:[],
+                departments:[],
                 gender:'',
                 profilePic:'',
             },
+        //     object :{
+        //         name: this.formValues.name,
+        //         departments: formValues.departments,
+        //         gender: formValues.gender,
+        //         salary: formValues.salary,
+        //         startDate: `${formValues.day} ${formValues.month} ${formValues.year}`,
+        //         note: formValues.notes,
+        //         id: formValues.id,
+        //         profilePic: formValues.profilePic
+        //   },
         }
     },
     methods:{
+        //  object :{
+        //     name: this.formValues.name,
+        //     departments: this.formValues.departments,
+        //     gender: this.formValues.gender,
+        //     salary: this.formValues.salary,
+        //     startDate: `${this.formValues.day} ${this.formValues.month} ${this.formValues.year}`,
+        //     note: this.formValues.notes,
+        //     id: this.formValues.id,
+        //     profilePic: this.formValues.profilePic
+        //   },
+         
         submitForm(event){
+            console.log(this.object);
             event.preventDefault();
-            console.log(this.formValues)
-            const storageData = JSON.stringify(this.formValues);
-            localStorage.setItem("EmployeeList", storageData)
+            // console.log(this.formValues)
+            // const storageData = JSON.stringify(this.formValues);
+            const data=this.formValues;
+            console.log(data);
+            // localStorage.setItem("EmployeeList", storageData)
+                 console.log(object)
+             EmployeeService.addEmployees(data).then((response) => {
+              console.log(response.data.data);
+                this.employees = response.data.data;  
+                alert("Data Added successfully!!",response) 
+            })
+             .catch(error => {
+                console.log(error);
+                  alert("WARNING!! Error while adding the data!");
+              })
         }
     },   
 }

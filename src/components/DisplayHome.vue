@@ -11,13 +11,64 @@
             <th>Notes</th>
             <th>Actions</th>
           </tr>
+             <tr v-for="employee in employees" v-bind:key="employee.id">
+                        <td><img src="../assets/Ellipse-8.png" alt="" />
+                    </td>
+                        <td> {{employee.name }}</td>
+                        <td> {{employee.gender}}</td>
+                        <td> {{employee.departments}}</td>
+                        <td> {{employee.salary}}</td>    
+                        <td> {{employee.startDate}}</td>
+                        <td> {{employee.note}}</td>
+                         <td>
+                      <img onclick={remove(employee.employeeId)} src="../assets/delete-black-18dp.svg" alt="delete" />
+                    <img src="../assets/create-black-18dp.svg" alt="edit" />
+                    </td>
+                    </tr>
           </tbody>
           </table>
 </template>
 
 <script>
+
+import EmployeeService from "../service/EmployeeService";
 export default {
-  name: 'DisplayHome'
+  name: 'DisplayHome',
+   data(){
+        return {
+            employees: []
+        }
+    },
+    methods: {
+        getEmployees(){
+            EmployeeService.getAllEmployees().then((response) => {
+              console.log(response.data.data);
+                this.employees = response.data.data;   
+            });
+        },
+    
+    remove(employeeId){
+    EmployeeService
+      .deleteEmployee(employeeId)
+      .then((data) => {
+        var answer = window.confirm("Data once deleted cannot be restored!! Do you wish to continue ?",data);
+        if(answer === true){
+            alert("Data deleted successfully!!");
+            window.location.reload();
+            this.getEmployees();
+        }
+        else{
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        alert("Something Went Wrong!");
+      });
+  },
+    },
+    created() {
+        this.getEmployees();
+    }
 }
 </script>
 
