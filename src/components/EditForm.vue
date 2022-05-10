@@ -153,8 +153,8 @@
                        <router-link to="/"> <button type="submit" className="resetButton button cancelButton">Cancel</button></router-link>
 
                         <div className="submit-reset">
-                            <button type="submit" className="button submitButton" id="submitButton">Submit</button>
-                           <button type="button"  className="resetButton button">Reset</button> 
+                            <button type="submit" className="button submitButton" id="submitButton">Update</button>
+                            <button type="button"  className="resetButton button">Reset</button> 
                         </div>
                     </div >
                 </form >
@@ -168,10 +168,11 @@
 import EmployeeService from "../service/EmployeeService";
 
 export default {
-    name: 'AddForm',
+    name: 'EditForm',
     data(){
         return{
             formValues:{
+                id:'',
                 name:'',
                 salary:'',
                 note:'',
@@ -181,7 +182,7 @@ export default {
                 departments:[],
                 gender:'',
                 profilePic:'',
-                startDate:''
+                startDate:'',
             },
         }
     },
@@ -190,20 +191,49 @@ export default {
             event.preventDefault();
             console.log(this.formValues.day);
             this.formValues.startDate=this.formValues.day + this.formValues.month + this.formValues.year;
-            console.log(this.formValues.startDate);
-            const data=this.formValues;
-            console.log(data);
-             EmployeeService.addEmployees(data).then((response) => {
+             const data=this.formValues;
+              const id=this.formValues.id;
+              console.log(id);
+             EmployeeService.updateEmployee(id,data).then((response) => {
               console.log(response.data.data);
                 this.employees = response.data.data;  
-                alert("Data Added successfully!!",response) 
+                alert("Data Update Successfully!!",response) 
             })
              .catch(error => {
                 console.log(error);
-                  alert("WARNING!! Error while adding the data!");
+                  alert("WARNING!! Error while edting the data!");
               })
         },
-    },   
+        getDataById(id){
+            EmployeeService
+            .getEmployee(id)
+            .then((response) => {
+                let obj = response.data.data;
+                this.setData(obj);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+         },
+        setData(obj){
+            console.log(obj);
+            let array=obj.startDate;
+            console.log(array);
+                this.formValues.id= obj.employeeId;
+                this.formValues.name= obj.name;
+                this.formValues.departments= obj.departments;
+                this.formValues.day=array[0]+array[1];
+                this.formValues.month=array[2]+array[3]+array[4];
+                this.formValues.year=array[5]+array[6]+array[7]+array[8];
+                this.formValues.note= obj.note;
+                this.formValues.gender=obj.gender;
+                this.formValues.salary=obj.salary;
+                console.log(this.formValues);
+        },
+    },
+    created() {
+        this.getDataById(this.$route.params.id);
+    }   
 }
 </script>
 

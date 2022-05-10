@@ -4,7 +4,7 @@ const EMPLOYEE_API_BASE_URL = 'http://localhost:8082/employeepayrollservice';
 
 class EmployeeService{
 
-    getAllEmployees() {
+      getAllEmployees() {
         return axios.get(`${EMPLOYEE_API_BASE_URL}/get`);
       }
 
@@ -13,8 +13,15 @@ class EmployeeService{
       }
 
       deleteEmployee(employee_id) {
-        return axios.delete(`${EMPLOYEE_API_BASE_URL}/delete/${employee_id}`);
-        
+        return axios.delete(`${EMPLOYEE_API_BASE_URL}/delete/${employee_id}`); 
+      }
+
+      getEmployee(employee_id) {
+        return axios.get(`${EMPLOYEE_API_BASE_URL}/get/${employee_id}`);
+      }
+
+      updateEmployee(employee_id,data) {
+        return axios.put(`${EMPLOYEE_API_BASE_URL}/update/${employee_id}`, data);
       }
 }
 

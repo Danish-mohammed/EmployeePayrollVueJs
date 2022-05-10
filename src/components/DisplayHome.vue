@@ -21,8 +21,9 @@
                         <td> {{employee.startDate}}</td>
                         <td> {{employee.note}}</td>
                          <td>
-                      <img onclick={remove(employee.employeeId)} src="../assets/delete-black-18dp.svg" alt="delete" />
-                    <img src="../assets/create-black-18dp.svg" alt="edit" />
+                      <img @click="remove(employee.employeeId)" src="../assets/delete-black-18dp.svg" alt="delete" />
+                       <!-- <router-link to="/editemployee"><img src="../assets/create-black-18dp.svg" alt="edit" /></router-link> -->
+                        <img @click="update(employee.employeeId)" src="../assets/create-black-18dp.svg" alt="edit" />
                     </td>
                     </tr>
           </tbody>
@@ -46,25 +47,30 @@ export default {
                 this.employees = response.data.data;   
             });
         },
+
+        update(id){
+          console.log(id);
+          this.$router.push({ name: "EditForm",params:{id:id}})
+        },
     
-    remove(employeeId){
-    EmployeeService
-      .deleteEmployee(employeeId)
-      .then((data) => {
-        var answer = window.confirm("Data once deleted cannot be restored!! Do you wish to continue ?",data);
-        if(answer === true){
-            alert("Data deleted successfully!!");
-            window.location.reload();
-            this.getEmployees();
-        }
-        else{
-          window.location.reload();
-        }
-      })
-      .catch((error) => {
-        alert("Something Went Wrong!");
-      });
-  },
+        remove(employeeId){
+        EmployeeService
+          .deleteEmployee(employeeId)
+          .then((data) => {
+            var answer = window.confirm("Data once deleted cannot be restored!! Do you wish to continue ?",data);
+            if(answer === true){
+                alert("Data deleted successfully!!");
+                window.location.reload();
+                this.getEmployees();
+            }
+            else{
+              window.location.reload();
+            }
+          })
+          .catch((error) => {
+            alert("Something Went Wrong!");
+          });
+        },
     },
     created() {
         this.getEmployees();
