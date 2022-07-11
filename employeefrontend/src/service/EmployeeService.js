@@ -20,8 +20,8 @@ class EmployeeService{
         return axios.get(`${EMPLOYEE_API_BASE_URL}/get/${employee_id}`);
       }
 
-      updateEmployee(employee_id,data) {
-        return axios.put(`${EMPLOYEE_API_BASE_URL}/update/${employee_id}`, data);
+      updateEmployee(id,data) {
+        return axios.put(`${EMPLOYEE_API_BASE_URL}/update/${id}`, data);
       }
 }
 

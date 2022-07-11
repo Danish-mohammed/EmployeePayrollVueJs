@@ -3,7 +3,7 @@
                 <body>
                     <header class="header-content header">
                         <div class="logo-content">
-                            <img src="../assets/logo(1).png" alt="" />
+                          <router-link to="/addemployee"> <img src="../assets/logo(1).png" alt="" /></router-link> 
                             <div>
                                 <span class="emp-text">EMPLOYEE</span><br/>
                                 <span class="emp-text emp-payroll">PAYROLL</span>
@@ -18,7 +18,7 @@
                                 </div>
                                    
                                         <div>
-                                                <router-link to="/addemployee"><button class="button">Add User</button></router-link>
+                                               <router-link to="/addemployee"> <button class="button">Add User</button></router-link>
                                         </div>
                             
                                 </div>
